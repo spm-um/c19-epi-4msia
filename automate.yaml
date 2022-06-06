@@ -1,0 +1,95 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+#
+# See https://github.com/r-lib/actions/tree/master/examples#readme for
+# additional example workflows available for the R community.
+
+name: Update-Automate-Pipeline
+
+on:
+  push:
+  branches: [ main ]
+pull_request:
+  branches: [ main ]
+schedule:
+  - cron: '30 5,11 * * *'
+
+jobs:
+  ShinyDoc-Update:
+  runs-on: windows-latest
+strategy:
+  matrix:
+  r-version: [4.1.0] 
+
+steps:
+  - uses: actions/checkout@v2
+- name: Set up R ${{ matrix.r-version }}
+uses: r-lib/actions/setup-R@v1
+with:
+  r-version: ${{ matrix.r-version }}
+
+- name: Setting up pandoc for Rmd docs
+uses: r-lib/actions/setup-pandoc@v1
+
+- name: Cache R packages
+id: cache
+uses: actions/cache@v2
+with:
+  path: ${{ env.R_LIBS_USER }}
+key: ${{ runner.os }}-shinydoc
+restore-keys: |
+  ${{ runner.os }}-
+  - name: Install dependencies
+if: steps.cache.outputs.cache-hit != 'true'
+run: |
+  install.packages(c("rsconnect", "tidyverse", "plotly", 
+                     "htmltools", "reactable", "scales",
+                     "httr", "jsonlite", "curl", 
+                     "lubridate", "MMWRweek", "quantmod"
+                     "EpiEstim", "readxl", "readr", "zoo",
+                     "shiny", "rmarkdown"))
+shell: Rscript {0}
+
+- name: Updating data and cleaning 
+run: |
+  source('scripts/datacleaning.R')
+shell: Rscript {0}
+
+- name: Running plots scripts
+run: |
+  source('scripts/bar_plot_basic_death_curves.R')
+source('scripts/bar_plot_basic_epid_curves.R')
+source('scripts/bar_plot_breakdown_death_curves.R')
+source('scripts/bar_plot_breakdown_epid_curves.R')
+source('scripts/bar_plot_vaccination.R')
+source('scripts/line_plot_cfr.R')
+source('scripts/line_plot_hosp_capacity.R')
+source('scripts/line_plot_incidence_7day.R')
+source('scripts/line_plot_mobility.R')
+source('scripts/line_plot_mortality_7day.R')
+source('scripts/line_plot_rt.R')
+source('scripts/line_plot_testing.R')
+source('scripts/line_plot_vaccination.R')
+source('scripts/line_plot_variant.R')
+source(knitr::purl('scripts/reactable_cfr.Rmd', quiet=T))
+source(knitr::purl('scripts/reactable_hospital_cap.Rmd', quiet=T))
+source(knitr::purl('scripts/reactable_testing.Rmd', quiet=T))
+source(knitr::purl('scripts/reactable_week_report.Rmd', quiet=T))
+
+shell: Rscript {0}
+
+- name: Connect to Shiny
+env:
+  SHINY_TOKEN: ${{ secrets.SHINY_TOKEN }}
+SHINY_SECRET: ${{ secrets.SHINY_SECRET }}
+run: |
+  shiny_token = Sys.getenv("SHINY_TOKEN")
+shiny_secret = Sys.getenv("SHINY_SECRET")
+rsconnect::setAccountInfo(name='spm-fom-um', token=shiny_token, secret=shiny_secret)
+shell: Rscript {0}
+
+- name: Uploading to shinyapps.io
+run: rsconnect::deployDoc("dashboard.Rmd", forceUpdate = getOption("rsconnect.force.update.apps", TRUE))
+shell: Rscript {0}

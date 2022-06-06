@@ -1,0 +1,14 @@
+name: c19-epi-4msia
+title: c19-epi-4msia
+username:
+account: spm-fom-um
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 6437738
+bundleId: 5982461
+url: https://spm-fom-um.shinyapps.io/c19-epi-4msia/
+when: 1654533011.9631
+lastSyncTime: 1654533011.9631
+asMultiple: FALSE
+asStatic: FALSE
+additionalFiles: plots/epid_report_tbl.rds
