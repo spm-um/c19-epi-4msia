@@ -1,12 +1,13 @@
 ---
-title: ""
-author: ""
+title: ''
+author: ''
 date: 'Last updated: `r file.info("plots")$mtime`'
+output: null
 runtime: shiny
-output: 
 theme: united
-resource_files: 
-  - plots/
+resource_files:
+- plots/
+- plots/epid_report_tbl.rds
 ---
 
 ```{r setup, echo=FALSE, include=FALSE}
