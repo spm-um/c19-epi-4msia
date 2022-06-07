@@ -14,8 +14,10 @@ library(reactable)
 library(htmltools)
 library(tidyverse)
 
+#pull data
 capacity <- read.csv('../data/capacity.csv')
 
+#strucutre data for reactable
 bed_cols <- c("hosp_beds", "bor", "change_bor")
 icu_cols <- c("icu_beds", "ior", "change_ior")
 vent_cols <- c("vent_beds",  "vor", "change_vor")

@@ -5,10 +5,9 @@ account: spm-fom-um
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 6437738
-bundleId: 5982461
+bundleId: 5984633
 url: https://spm-fom-um.shinyapps.io/c19-epi-4msia/
-when: 1654533011.9631
-lastSyncTime: 1654533011.9631
+when: 1654587904.66465
+lastSyncTime: 1654587904.66465
 asMultiple: FALSE
 asStatic: FALSE
-additionalFiles: plots/epid_report_tbl.rds

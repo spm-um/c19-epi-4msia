@@ -174,7 +174,7 @@ transmission <- transmission %>% left_join(rt_output, by=c("time", "state")) %>%
   left_join(upper_output, by=c("time", "state"))
 
 #input population data
-pop <- read_excel("P:/COVID-19/R0 Malaysia/data/population_healthcapacity/state_data_demographics_only_v2.xlsx", 
+pop <- read_excel("data/demographics.xlsx", 
                   col_types = c("text", "numeric", "text", 
                                 "text", "text", "text", "text", "text", 
                                 "text", "text", "text", "text", "text", 
@@ -554,3 +554,140 @@ mobility <-  left_join(mobility, mobility_cases, by=c("date", "state")) %>%
 #index the mobility report
 write.csv(mobility,  "data/mobility.csv")
 
+#situational report
+#get a weekly summary of key indicators
+transmission <- read.csv('data/transmission.csv')
+testing <- read.csv('data/testing.csv')
+capacity <- read.csv('data/capacity.csv')
+mobility <- read.csv('data/mobility.csv')
+vaccination <- read.csv('data/vaccination.csv')
+
+transmission_7day <- transmission %>% group_by(state) %>%
+  mutate(date=as.Date(date),
+         ir_7day=round(as.numeric(ir_7day),1),
+         mr_7day=round(as.numeric(mr_7day),1),
+         rt=round(as.numeric(rt),1),
+         lower=round(as.numeric(lower),1),
+         upper=round(as.numeric(upper),1)) %>%
+  filter(date>max(date)-14) %>%
+  mutate(week=ifelse(date>max(date)-7,1,2)) %>%
+  ungroup() %>% as.data.frame() %>%
+  group_by(state, week) %>%
+  summarise(mean_ir=mean(ir_7day),
+            mean_mr=mean(mr_7day),
+            mean_rt=mean(rt),
+            mean_lower=mean(lower),
+            mean_upper=mean(upper)) %>%
+  ungroup() %>%
+  group_by(state) %>%
+  mutate(perc_change_ir=round(((mean_ir-lag(mean_ir))/lag(mean_ir))*100,1),
+         perc_change_mr=round(((mean_mr-lag(mean_mr))/lag(mean_mr))*100,1),
+         perc_change_rt=round(((mean_rt-lag(mean_rt))/lag(mean_rt))*100,1),
+         mean_rt_full=paste0(round(mean_rt,2), " (", round(mean_lower,1), ", ", round(mean_upper,1), ")")) %>%
+  mutate_if(is.numeric, list(~na_if(., Inf))) %>%
+  replace(is.na(.), 0) %>%
+  filter(week==2) %>%
+  select(-week) 
+
+
+test_7day <- testing %>% group_by(state) %>%
+  mutate(date=as.Date(date),
+         ma_7day_tr=round(as.numeric(ma_7day_tr),1),
+         ma_7day_tpr=ma_7day_tpr/100) %>%
+  filter(date>max(date)-14) %>%
+  mutate(week=ifelse(date>max(date)-7,1,2)) %>%
+  ungroup() %>% as.data.frame() %>%
+  group_by(state, week) %>%
+  summarise(mean_tpr=mean(ma_7day_tpr),
+            mean_tr=mean(ma_7day_tr)) %>%
+  ungroup() %>%
+  group_by(state) %>%
+  mutate(perc_change_tpr=round(((mean_tpr-lag(mean_tpr))/lag(mean_tpr))*100,1),
+         perc_change_tr=round(((mean_tr-lag(mean_tr))/lag(mean_tr))*100,1)) %>%
+  mutate_if(is.numeric, list(~na_if(., Inf))) %>%
+  replace(is.na(.), 0) %>%
+  mutate(trend_tpr=ifelse(perc_change_tpr<0, "down", 
+                          ifelse(perc_change_tpr>0, "up", "unchanged"))) %>%
+  filter(week==2) %>%
+  select(-week)
+
+capacity_7day <- capacity %>% group_by(state) %>%
+  mutate(date=as.Date(date),
+         bor=bor/100,
+         ior=ior/100,
+         vor=vor/100) %>%
+  filter(date>max(date)-14) %>%
+  mutate(week=ifelse(date>max(date)-7,1,2)) %>%
+  ungroup() %>% as.data.frame() %>%
+  group_by(state, week) %>%
+  summarise(mean_bor=mean(bor),
+            mean_ior=mean(ior),
+            mean_vor=mean(vor)) %>%
+  ungroup() %>%
+  group_by(state) %>%
+  mutate(perc_change_bor=round(((mean_bor-lag(mean_bor))/lag(mean_bor))*100,1),
+         perc_change_ior=round(((mean_ior-lag(mean_ior))/lag(mean_ior))*100,1),
+         perc_change_vor=round(((mean_vor-lag(mean_vor))/lag(mean_vor))*100,1)) %>%
+  mutate_if(is.numeric, list(~na_if(., Inf))) %>%
+  replace(is.na(.), 0) %>%
+  mutate(trend_bor=ifelse(perc_change_bor<0, "down", 
+                          ifelse(perc_change_bor>0, "up", "unchanged")),
+         trend_ior=ifelse(perc_change_ior<0, "down", 
+                          ifelse(perc_change_ior>0, "up", "unchanged")),
+         trend_vor=ifelse(perc_change_vor<0, "down", 
+                          ifelse(perc_change_vor>0, "up", "unchanged"))) %>%
+  filter(week==2) %>%
+  select(-week)
+
+
+vaccination_7day <- vaccination %>% group_by(state) %>%
+  mutate(date=as.Date(date),
+         perc_vax2=perc_vax2/100,
+          perc_booster=perc_booster/100) %>%
+  filter(date>max(date)-14) %>%
+  mutate(week=ifelse(date>max(date)-7,1,2)) %>%
+  ungroup() %>% as.data.frame() %>%
+  group_by(state, week) %>%
+  summarise(max_vax2=max(perc_vax2),
+            max_booster=max(perc_booster)) %>%
+  ungroup() %>%
+  group_by(state) %>%
+  mutate(perc_vax2_change=round(((max_vax2-lag(max_vax2))/lag(max_vax2))*100,1),
+         perc_booster_change=round(((max_booster-lag(max_booster))/lag(max_booster))*100,1)) %>%
+  mutate_if(is.numeric, list(~na_if(., Inf))) %>%
+  replace(is.na(.), 0) %>% 
+  mutate(trend_vax2=ifelse(perc_vax2_change<0, "down", 
+                           ifelse(perc_vax2_change>0, "up", "unchanged")),
+         trend_booster=ifelse(perc_booster_change<0, "down", 
+                              ifelse(perc_booster_change>0, "up", "unchanged"))) %>%
+  filter(week==2) %>%
+  select(-week) 
+
+#select KV- replace with sel, kl and put and rejoin
+kv_vax1 <- vaccination_7day %>% filter (state=="Klang valley") %>%
+  mutate(state=recode(state,"Klang valley"="Selangor"))
+kv_vax2 <- vaccination_7day %>% filter (state=="Klang valley") %>%
+  mutate(state=recode(state,"Klang valley"="W.P. Kuala Lumpur"))
+kv_vax3 <- vaccination_7day %>% filter (state=="Klang valley") %>%
+  mutate(state=recode(state,"Klang valley"="W.P. Putrajaya"))
+
+#join back to the main set
+vaccination_7day <- bind_rows(vaccination_7day, kv_vax1, kv_vax2, kv_vax3) %>%
+  filter(state!="Klang valley")
+
+
+#join all the sets
+epid_report <- left_join(transmission_7day, test_7day, by="state") %>%
+  left_join(capacity_7day, by="state") %>%
+  left_join(vaccination_7day, by="state") %>%
+  replace(is.na(.), 0) %>%
+  as.data.frame() %>% mutate_if(is.numeric, round, digits=2)
+
+epid_report_msia <- epid_report %>% filter(state=="Malaysia") %>% mutate(state=as.factor(state))
+epid_report_state <- epid_report %>% filter(state!="Malaysia") %>%
+  mutate(state=as.factor(state)) %>%
+  arrange(desc(mean_ir))
+epid_report <- bind_rows(epid_report_msia, epid_report_state)
+
+#write epid report to csv
+write.csv(epid_report, "data/epid_report.csv")

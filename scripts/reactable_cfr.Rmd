@@ -16,7 +16,6 @@ library(tidyverse)
 library(lubridate)
 
 #load data
-setwd(getwd())
 vaccination <- read.csv('../data/vaccination.csv')
 cfr <- read.csv('../data/cfr.csv')
 

@@ -15,8 +15,10 @@ library(htmltools)
 library(tidyverse)
 library(RColorBrewer)
 
+#pull data
 testing <- read.csv('../data/testing.csv')
 
+#strcuture data for reactable
 tpr_cols <- c("ma_7day_tpr", "change_tpr")
 tr_cols <- c("ma_7day_tr", "change_tr")
 

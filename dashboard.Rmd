@@ -1,7 +1,7 @@
 ---
-title: ''
+title: 'COVID-19 Epidemiology for Malaysia'
 author: ''
-date: 'Last updated: `r file.info("plots")$mtime`'
+date: ''
 output: null
 runtime: shiny
 theme: united
@@ -15,14 +15,14 @@ knitr::opts_chunk$set(echo = T,warnings = FALSE, message = FALSE)
 ```
 
 ```{r, echo=FALSE, include=FALSE}
-library(shiny) ## for UI
-library(plotly) ## for renderPlotly function
-library(leaflet) ## for renderLeaflet function
+library(shiny)
+library(plotly) 
 library(scales)
+library(tidyverse)
 library(reactable)
 library(rsconnect)
 library(packrat)
-
+library(htmltools)
 ```
 
 ```{r LoadPlots, echo=FALSE, include=FALSE}
@@ -57,6 +57,8 @@ ct_tpr <- ifelse(epid_report$mean_tpr[epid_report$state=="Malaysia"]>20, "4",
   <span style="font-family: Calibri, serif; font-size:12pt">A test positivity rate of </span><span style="font-family: Calibri, serif; color: red; font-size:12pt; font-weight: bold;">`r round(epid_report$mean_tpr[epid_report$state=="Malaysia"],1)`%</span>  <span style="font-family: Calibri, serif; font-size:12pt">was reported at the National level over the last 7-days </span> <span style="font-family: Calibri, serif; color: blue; font-size:12pt"> (`r format(Sys.Date()-8, '%A, %d %B, %Y')`-`r format(Sys.Date()-1, '%A, %d %B %Y')`)</span> <span tyle="font-family: Calibri, serif; color: red; font-size:12pt; font-weight: bold"> `r ifelse(epid_report$perc_change_tpr[epid_report$state=="Malaysia"]>0, "an increase", "a decrease")`</span> <span style="font-family: Calibri, serif; font-size:12pt"> of </span> <span style="font-family: Calibri, serif; color: red; font-size:12pt; font-weight: bold"> `r round(epid_report$perc_change_tpr[epid_report$state=="Malaysia"],1)`%</span>  <span style="font-family: Calibri, serif; font-size:12pt"> from the previous week. This corresponds to community transmission level `r ct_tpr`.<span>  <span style="font-family: Calibri, serif; font-size:12pt">A testing rate of </span> <span style="font-family: Calibri, serif; color: red; font-size:12pt; font-weight: bold;">`r round(epid_report$mean_tr[epid_report$state=="Malaysia"],1)` </span> <span style="font-family: Calibri, serif; font-size:12pt"> per 1,000 population, was reported over the same period.</span>  <span style="font-family: Calibri, serif; font-size:12pt"> This corresponds to </span> <span style="font-family: Calibri, serif; font-size:12pt"> `r ifelse(epid_report$perc_change_tr[epid_report$state=="Malaysia"]>0, "an increase", "a decrease")`</span> <span style="font-family: Calibri, serif; font-size:12pt"> of </span> <span style="font-family: Calibri, serif; color: red; font-size:12pt; font-weight: bold"> `r round(epid_report$perc_change_tr[epid_report$state=="Malaysia"],1)`%</span><span style="font-family: Calibri, serif; font-size:12pt"> from the previous week.</span>
   
 <span style="font-family: Calibri, serif; font-size:12pt">A bed occupancy rate of </span><span style="font-family: Calibri, serif; color: red; font-size:12pt; font-weight: bold;">`r round(epid_report$mean_bor[epid_report$state=="Malaysia"],1)`%</span> <span style="font-family: Calibri, serif; font-size:12pt">was reported over the last 7-days</span> <span style="font-family: Calibri, serif; color: blue; font-size:12pt"> (`r format(Sys.Date()-8, '%A, %d %B, %Y')`-`r format(Sys.Date()-1, '%A, %d %B %Y')`)</span> <span style="font-family: Calibri, serif; font-size:12pt">This corresponds to </span><span style="font-family: Calibri, serif; font-size:12pt"> `r ifelse(epid_report$perc_change_bor[epid_report$state=="Malaysia"]>0, "an increase", "a decrease")`</span> <span style="font-family: Calibri, serif; font-size:12pt"> of </span> <span style="font-family: Calibri, serif; color: red; font-size:12pt; font-weight: bold"> `r round(epid_report$perc_change_bor[epid_report$state=="Malaysia"],1)`%</span><span style="font-family: Calibri, serif; font-size:12pt"> from the previous week.</span>  <span style="font-family: Calibri, serif; font-size:12pt">An ICU occupancy rate of </span> <span style="font-family: Calibri, serif; color: red; font-size:12pt; font-weight: bold">`r round(epid_report$mean_ior[epid_report$state=="Malaysia"],1)`% </span> <span style="font-family: Calibri, serif; font-size:12pt"> was reported over the same period.</span>  <span style="font-family: Calibri, serif; font-size:12pt">This corresponds to </span><span style="font-family: Calibri, serif; font-size:12pt; "> `r ifelse(epid_report$perc_change_ior[epid_report$state=="Malaysia"]>0, "an increase", "a decrease")`</span> <span style="font-family: Calibri, serif; font-size:12pt"> of </span> <span style="font-family: Calibri, serif; color: red; font-size:12pt; font-weight: bold"> `r round(epid_report$perc_change_ior[epid_report$state=="Malaysia"],1)`%</span><span style="font-family: Calibri, serif; font-size:12pt"> from the previous week.</span>
+
+Data was last updated on `r file.info("plots")$mtime`
   
 ```{r, echo=FALSE}
 renderReactable(epid_report_tbl)
@@ -852,5 +854,10 @@ h2 { /* Header 2 */
     width:75%
   
 }
+
+d-title {
+    visibility: hidden;
+  }
+
 
 ```
