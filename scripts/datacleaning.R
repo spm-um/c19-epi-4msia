@@ -1,6 +1,6 @@
 #load packages
 rm(list=ls())
-required_packages <- c("tidyverse", "EpiEstim", "readxl", "readr", "zoo", "lubridate")
+required_packages <- c("tidyverse", "EpiEstim", "readxl", "readr", "zoo", "lubridate", "arrow")
 not_installed <- required_packages[!(required_packages %in% installed.packages()[ , "Package"])]    
 if(length(not_installed)) install.packages(not_installed)                                           
 suppressWarnings(lapply(required_packages, require, character.only = TRUE))
@@ -400,8 +400,8 @@ vax<- full_join(vax, vaxreg, by=c("date","state")) %>%
 write.csv(vax, "data/vaccination.csv")
 
 #cfr - delay adjusted
-#merge datasets
-cases <- read.csv("https://moh-malaysia-covid19.s3.ap-southeast-1.amazonaws.com/linelist_cases.csv")
+#load dataset
+cases <- arrow::read_parquet("s3://moh-malaysia-covid19/linelist_cases.parquet", as_data_frame = TRUE)
 
 #ic codes
 ic_codes <- data.frame(state=c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16),
@@ -410,7 +410,8 @@ ic_codes <- data.frame(state=c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
 
 
 #label the cases
-cases <- left_join(cases, ic_codes, by="state")
+cases <- left_join(cases, ic_codes, by="state") %>%
+  select(-"__index_level_0__")#remove accessory column
 
 cases_age <- cases %>%
   select(date,age) %>% 
@@ -438,7 +439,10 @@ cases_total <- cases_age %>%
 cases_cfr <- bind_rows(cases_age, cases_total)
 
 #load deaths data
-deaths <- read.csv("https://raw.githubusercontent.com/MoH-Malaysia/covid19-public/main/epidemic/linelist/linelist_deaths.csv")
+deaths <- arrow::read_parquet("s3://moh-malaysia-covid19/linelist_deaths.parquet", as_data_frame = TRUE)
+
+#remove accesory column
+deaths <- deaths %>% select(-"__index_level_0__")
 
 #tabulate the number od deaths by the date they turn positive 
 deaths_age <- deaths %>% 
