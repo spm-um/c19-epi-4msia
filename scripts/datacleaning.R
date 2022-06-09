@@ -422,7 +422,7 @@ cases_age <- cases %>%
   group_by(date, age) %>% tally() %>%
   rename(case=n) %>% ungroup() %>%
   group_by(age) %>%
-  complete(date = seq.Date(min(date), max(date), by="day"), age) %>%
+  complete(date = seq.Date(min(date), max(date), by="day")) %>%
   mutate(ma_case = rollmean(case, k = 7, fill = "extend")) %>% ungroup() %>%
   mutate(ma_case=ifelse(is.na(ma_case), 0, ma_case)) %>%
   select(-case)
