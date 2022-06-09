@@ -415,18 +415,15 @@ cases <- left_join(cases, ic_codes, by="state") %>%
 
 cases_age <- cases %>%
   select(date,age) %>% 
-  rename(age=age) %>%
   mutate(age=ifelse(age <18, 0,#0-17 years old
                     ifelse(age >59, 2, 1)), #>60
          date=as.Date(date),
          id=(as.numeric(date)-min(as.numeric(date)))+1) %>%
   group_by(date, age) %>% tally() %>%
-  rename(case=n) %>%
+  rename(case=n) %>% ungroup() %>%
   group_by(age) %>%
   complete(date = seq.Date(min(date), max(date), by="day"), age) %>%
   mutate(ma_case = rollmean(case, k = 7, fill = "extend")) %>% ungroup() %>%
-  group_by(date) %>%
-  na.omit()  %>%
   mutate(ma_case=ifelse(is.na(ma_case), 0, ma_case)) %>%
   select(-case)
 
@@ -588,6 +585,7 @@ transmission_7day <- transmission %>% group_by(state) %>%
          perc_change_mr=round(((mean_mr-lag(mean_mr))/lag(mean_mr))*100,1),
          perc_change_rt=round(((mean_rt-lag(mean_rt))/lag(mean_rt))*100,1),
          mean_rt_full=paste0(round(mean_rt,2), " (", round(mean_lower,1), ", ", round(mean_upper,1), ")")) %>%
+  ungroup() %>%
   mutate_if(is.numeric, list(~na_if(., Inf))) %>%
   replace(is.na(.), 0) %>%
   filter(week==2) %>%
@@ -608,6 +606,7 @@ test_7day <- testing %>% group_by(state) %>%
   group_by(state) %>%
   mutate(perc_change_tpr=round(((mean_tpr-lag(mean_tpr))/lag(mean_tpr))*100,1),
          perc_change_tr=round(((mean_tr-lag(mean_tr))/lag(mean_tr))*100,1)) %>%
+  ungroup() %>%
   mutate_if(is.numeric, list(~na_if(., Inf))) %>%
   replace(is.na(.), 0) %>%
   mutate(trend_tpr=ifelse(perc_change_tpr<0, "down", 
@@ -632,6 +631,7 @@ capacity_7day <- capacity %>% group_by(state) %>%
   mutate(perc_change_bor=round(((mean_bor-lag(mean_bor))/lag(mean_bor))*100,1),
          perc_change_ior=round(((mean_ior-lag(mean_ior))/lag(mean_ior))*100,1),
          perc_change_vor=round(((mean_vor-lag(mean_vor))/lag(mean_vor))*100,1)) %>%
+  ungroup() %>%
   mutate_if(is.numeric, list(~na_if(., Inf))) %>%
   replace(is.na(.), 0) %>%
   mutate(trend_bor=ifelse(perc_change_bor<0, "down", 
@@ -658,6 +658,7 @@ vaccination_7day <- vaccination %>% group_by(state) %>%
   group_by(state) %>%
   mutate(perc_vax2_change=round(((max_vax2-lag(max_vax2))/lag(max_vax2))*100,1),
          perc_booster_change=round(((max_booster-lag(max_booster))/lag(max_booster))*100,1)) %>%
+  ungroup() %>%
   mutate_if(is.numeric, list(~na_if(., Inf))) %>%
   replace(is.na(.), 0) %>% 
   mutate(trend_vax2=ifelse(perc_vax2_change<0, "down", 
