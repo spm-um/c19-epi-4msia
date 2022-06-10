@@ -707,8 +707,6 @@ renderPlotly({
 )
 ```
 
-
-
 ```{r ref.label="table", eval=FALSE}
 ```
 

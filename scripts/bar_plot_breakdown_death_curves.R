@@ -85,7 +85,7 @@ bid <- trans %>% select(state, date, deaths_bid) %>%
 
 #plot epidemic curves for all cases
 #write a loop to plot and save all the plots
-loop.vector <- 2:ncol(cases)
+loop.vector <- 2:ncol(deaths)
 
 for (i in loop.vector) { # Loop over loop.vector
   
@@ -164,7 +164,7 @@ bid <- trans %>% select(state, date, perc_deaths_bid) %>%
 
 #plot epidemic curves for all cases
 #write a loop to plot and save all the plots
-loop.vector <- 2:ncol(cases)
+loop.vector <- 2:ncol(deaths)
 
 for (i in loop.vector) { # Loop over loop.vector
   
@@ -268,7 +268,7 @@ boost <- trans %>% select(state, date, deaths_boost) %>%
 
 #plot epidemic curves for all cases
 #write a loop to plot and save all the plots
-loop.vector <- 2:ncol(cases)
+loop.vector <- 2:ncol(deaths)
 
 for (i in loop.vector) { # Loop over loop.vector
   
@@ -379,7 +379,7 @@ boost <- trans %>% select(state, date, perc_deaths_boost) %>%
 
 #plot epidemic curves for all cases
 #write a loop to plot and save all the plots
-loop.vector <- 2:ncol(cases)
+loop.vector <- 2:ncol(deaths)
 
 for (i in loop.vector) { # Loop over loop.vector
   

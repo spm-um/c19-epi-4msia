@@ -1,22 +1,10 @@
----
-title: "report"
-output: html_document
-resource_files:
-  - '.'
----
-
-```{r setup, echo=FALSE, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-```{r table, echo=FALSE}
 library(reactable)
 library(htmltools)
 library(tidyverse)
 library(shiny)
 
 #pull data
-epid_report <- read.csv("../data/epid_report.csv")
+epid_report <- read.csv("data/epid_report.csv")
 
 #prepare the columns for the epid report
 trans_cols <- c("mean_ir", "perc_change_ir", "mean_mr", "perc_change_mr", "mean_rt_full", "perc_change_rt")
@@ -100,10 +88,10 @@ trend_indicator <- function(value = c("unchanged", "up", "down", "new")) {
   label <- switch(value,
                   unchanged = "Unchanged", up = "Trending up",
                   down = "Trending down", new = "New")
-
+  
   # Add img role and tooltip/label for accessibility
   args <- list(role = "img", title = label)
-
+  
   if (value == "unchanged") {
     args <- c(args, list("–", style = "color: #666; font-weight: 700"))
   } else if (value == "up") {
@@ -134,7 +122,7 @@ tbl <- reactable(
       headerStyle = list(fontWeight = 400), 
       name="State",
       cell = function(value) {
-        img_src <- knitr::image_uri(sprintf("../images/%s.png", value))
+        img_src <- knitr::image_uri(sprintf("images/%s.png", value))
         image <- img(src = img_src, height = "32px", alt = "")
         tagList(
           div(style = list(display = "inline-block", width = "70px"), image),
@@ -174,15 +162,15 @@ tbl <- reactable(
         div(class = "date-rating", style = list(background = color), value)
       }
     ),
-   
+    
     mean_tpr = perc_column(name = "TPR (%)"),
     trend_tpr = colDef(
-        header = span("TPR trend", class = "sr-only"),
-        sortable = FALSE,
-        align = "center",
-        width = 25,
-        cell = function(value) trend_indicator(value)
-      ),
+      header = span("TPR trend", class = "sr-only"),
+      sortable = FALSE,
+      align = "center",
+      width = 25,
+      cell = function(value) trend_indicator(value)
+    ),
     mean_tr = number_col_column(name = "TR", maxWidth = 40),
     perc_change_tr = change_column(
       name = "% change*",
@@ -196,28 +184,28 @@ tbl <- reactable(
     
     mean_bor = perc_column(name = "BOR (%)"),
     trend_bor = colDef(
-        header = span("BOR trend", class = "sr-only"),
-        sortable = FALSE,
-        align = "center",
-        width = 25,
-        cell = function(value) trend_indicator(value)
-      ),
+      header = span("BOR trend", class = "sr-only"),
+      sortable = FALSE,
+      align = "center",
+      width = 25,
+      cell = function(value) trend_indicator(value)
+    ),
     mean_ior = perc_column(name = "IOR (%)"),
     trend_ior = colDef(
-        header = span("Trend", class = "sr-only"),
-        sortable = FALSE,
-        align = "center",
-        width = 25,
-        cell = function(value) trend_indicator(value)
-      ),
+      header = span("Trend", class = "sr-only"),
+      sortable = FALSE,
+      align = "center",
+      width = 25,
+      cell = function(value) trend_indicator(value)
+    ),
     mean_vor = perc_column(name = "VOR (%)"),
     trend_vor = colDef(
-        header = span("Trend", class = "sr-only"),
-        sortable = FALSE,
-        align = "center",
-        width = 25,
-        cell = function(value) trend_indicator(value)
-      ),
+      header = span("Trend", class = "sr-only"),
+      sortable = FALSE,
+      align = "center",
+      width = 25,
+      cell = function(value) trend_indicator(value)
+    ),
     
     max_vax2 = perc_column2(name = "Full-dose (%)"),
     max_booster = perc_column2(name = "Booster (%)")
@@ -248,120 +236,5 @@ div(class = "standings",
     tbl,
     "*IR=incidence rate, MR=mortality rate, TR=testing rate, TPR=test-positivity ratio, Rt=time-varying reproductive number, BOR=Bed-occupancy rate, IOR= ICU-occupancy rate, VOR=ventilator-utilisation rate, % change calculated as the percentage change of indicator compared to the last week"
 )
-```
 
----
-
-```{r ref.label="table", eval=FALSE}
-```
-
-```{r}
-tags$link(href = "https://fonts.googleapis.com/css?family=Karla:400,700|Fira+Mono&display=fallback", rel = "stylesheet")
-tags$style("@import url(https://use.fontawesome.com/releases/v5.7.2/css/all.css);")
-```
-
-```{css, echo=FALSE}
-.standings {
-  font-family: Karla, "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
-}
-.title {
-  margin: 18px 0;
-  font-size: 16px;
-}
-.title h2 {
-  font-size: 20px;
-  font-weight: 600;
-}
-.standings-table {
-  margin-bottom: 20px;
-}
-/* Align header text to the bottom */
-.header,
-.group-header {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-}
-.header {
-  border-bottom-color: #555;
-  font-size: 13px;
-  font-weight: 400;
-  text-transform: uppercase;
-}
-/* Highlight headers when sorting */
-.header:hover,
-.header[aria-sort="ascending"],
-.header[aria-sort="descending"] {
-  background-color: #eee;
-}
-.border-left {
-  border-left: 2px solid #555;
-}
-/* Use box-shadow to create row borders that appear behind vertical borders */
-.cell {
-  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-}
-.group-last .cell {
-  box-shadow: inset 0 -2px 0 #555;
-}
-.team {
-  display: flex;
-  align-items: baseline;
-}
-.record {
-  margin-left: 5px;
-  color: #999;
-  font-size: 13px;
-}
-.state-name {
-  font-size: 18px;
-  font-weight: 700;
-}
-.flag {
-  margin-right: 8px;
-  height: 21px;
-  border: 1px solid #f0f0f0;
-}
-.group {
-  font-size: 19px;
-}
-.number {
-  font-family: "Fira Mono", Consolas, Monaco, monospace;
-  font-size: 12px;
-  line-height: 30px;
-  white-space: pre;
-}
-.date-rating {
-  width: 30px;
-  height: 30px;
-  border: 1px solid rgba(0, 0, 0, 0.03);
-  border-radius: 50%;
-  color: #000;
-  font-size: 12px;
-  letter-spacing: -2px;
-}
-```
-
-```{css echo=FALSE}
-/* rmarkdown html documents */
-.main-container {
-  max-width: 1054px !important;
-}
-h1.title {
-  display: none;
-}
-/* pkgdown articles */
-.contents {
-  width: 1054px;
-}
-.page-header {
-  display: none;
-}
-
-```
-
-```{r}
-saveRDS(tbl, '../plots/epid_report_tbl.rds')
-```
-
+saveRDS(tbl, 'plots/epid_report_tbl.rds')

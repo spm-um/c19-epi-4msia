@@ -174,11 +174,8 @@ transmission <- transmission %>% left_join(rt_output, by=c("time", "state")) %>%
   left_join(upper_output, by=c("time", "state"))
 
 #input population data
-pop <- read_excel("data/demographics.xlsx", 
-                  col_types = c("text", "numeric", "text", 
-                                "text", "text", "text", "text", "text", 
-                                "text", "text", "text", "text", "text", 
-                                "text"))
+pop <- read_csv("data/demographics.csv", 
+                         col_types = cols(population_new = col_number()))
 pop <- pop %>% select (state, population_new)
 
 #calaculate moving ir and mr

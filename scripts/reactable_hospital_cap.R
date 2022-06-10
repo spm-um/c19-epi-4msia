@@ -1,21 +1,9 @@
----
-title: "healthcare_capacity"
-output: html_document
-resource_files:
-  - '.'
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-```{r table, echo=FALSE}
 library(reactable)
 library(htmltools)
 library(tidyverse)
 
 #pull data
-capacity <- read.csv('../data/capacity.csv')
+capacity <- read.csv('data/capacity.csv')
 
 #strucutre data for reactable
 bed_cols <- c("hosp_beds", "bor", "change_bor")
@@ -74,6 +62,7 @@ make_color_pal <- function(colors, bias = 1) {
 off_rating_color <- make_color_pal(c("#ff2700", "#f8fcf8", "#44ab43"), bias = 1.3)
 col <- rev(as.vector(viridis::viridis(100)))
 knockout_pct_color <- make_color_pal(col, bias = 2)
+
 tbl <- reactable(
   capacity,
   pagination = FALSE,
@@ -90,7 +79,7 @@ tbl <- reactable(
       headerStyle = list(fontWeight = 700), 
       name="State",
       cell = function(value) {
-        img_src <- knitr::image_uri(sprintf("../images/%s.png", value))
+        img_src <- knitr::image_uri(sprintf("images/%s.png", value))
         image <- img(src = img_src, height = "36px", alt = "")
         tagList(
           div(style = list(display = "inline-block", width = "70px"), image),
@@ -168,120 +157,5 @@ div(class = "standings",
     "*total number of beds/ ventilators available
     **absolute change from 7-days prior, Negative number = decrease occupancy, Positive number = increase occupancy"
 )
-```
 
----
-
-```{r ref.label="table", eval=FALSE}
-```
-
-
-```{r}
-tags$link(href = "https://fonts.googleapis.com/css?family=Karla:400,700|Fira+Mono&display=fallback", rel = "stylesheet")
-```
-
-```{css, echo=FALSE}
-.standings {
-  font-family: Karla, "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
-}
-.title {
-  margin: 18px 0;
-  font-size: 16px;
-}
-.title h2 {
-  font-size: 20px;
-  font-weight: 600;
-}
-.standings-table {
-  margin-bottom: 20px;
-}
-/* Align header text to the bottom */
-.header,
-.group-header {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-}
-.header {
-  border-bottom-color: #555;
-  font-size: 13px;
-  font-weight: 400;
-  text-transform: uppercase;
-}
-/* Highlight headers when sorting */
-.header:hover,
-.header[aria-sort="ascending"],
-.header[aria-sort="descending"] {
-  background-color: #eee;
-}
-.border-left {
-  border-left: 2px solid #555;
-}
-/* Use box-shadow to create row borders that appear behind vertical borders */
-.cell {
-  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-}
-.group-last .cell {
-  box-shadow: inset 0 -2px 0 #555;
-}
-.team {
-  display: flex;
-  align-items: baseline;
-}
-.record {
-  margin-left: 5px;
-  color: #999;
-  font-size: 13px;
-}
-.state-name {
-  font-size: 18px;
-  font-weight: 700;
-}
-.flag {
-  margin-right: 8px;
-  height: 21px;
-  border: 1px solid #f0f0f0;
-}
-.group {
-  font-size: 19px;
-}
-.number {
-  font-family: "Fira Mono", Consolas, Monaco, monospace;
-  font-size: 12px;
-  line-height: 30px;
-  white-space: pre;
-}
-.date-rating {
-  width: 30px;
-  height: 30px;
-  border: 1px solid rgba(0, 0, 0, 0.03);
-  border-radius: 50%;
-  color: #000;
-  font-size: 12px;
-  letter-spacing: -2px;
-}
-```
-
-```{css, echo=FALSE}
-/* rmarkdown html documents */
-.main-container {
-  max-width: 1054px !important;
-}
-h1.title {
-  display: none;
-}
-/* pkgdown articles */
-.contents {
-  width: 1054px;
-}
-.page-header {
-  display: none;
-}
-
-```
-
-```{r}
-saveRDS(tbl, '../plots/healthcare_tbl.rds')
-```
-
+saveRDS(tbl, 'plots/healthcare_tbl.rds')

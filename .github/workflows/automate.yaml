@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ master ]
   schedule:
-    - cron: '30 5,6 * * *'
+    - cron: '30 17,23 * * *'
 
 jobs:
   ShinyDoc-Update:
@@ -63,10 +63,10 @@ jobs:
           source('scripts/line_plot_testing.R')
           source('scripts/line_plot_vaccination.R')
           source('scripts/line_plot_variant.R')
-          source(knitr::purl('scripts/reactable_cfr.Rmd', quiet=T))
-          source(knitr::purl('scripts/reactable_hospital_cap.Rmd', quiet=T))
-          source(knitr::purl('scripts/reactable_testing.Rmd', quiet=T))
-          source(knitr::purl('scripts/reactable_week_report.Rmd', quiet=T))
+          source('scripts/reactable_cfr.R')
+          source('scripts/reactable_hospital_cap.R')
+          source('scripts/reactable_testing.R')
+          source('scripts/reactable_week_report.R')
         shell: Rscript {0}
         
       - name: Connect to Shiny
