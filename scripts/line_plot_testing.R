@@ -106,5 +106,5 @@ for (i in loop.vector) { # Loop over loop.vector
            hovermode="x unified")
   
   #save the plot
-  saveRDS(test_plot, paste0("plots/test_curve_",names(tpr[i]),".rds"))
+  saveRDS(test_plot, paste0("plots/test_curve_",names(tr[i]),".rds"))
 }

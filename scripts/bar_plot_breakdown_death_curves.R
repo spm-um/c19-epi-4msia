@@ -136,7 +136,7 @@ for (i in loop.vector) { # Loop over loop.vector
            hovermode="x unified") 
   
   #save the plot
-  saveRDS(death_curve_breakdown, paste0("plots/death_curve_breakdown_bid_",names(cases[i]),"_daily",".rds"))
+  saveRDS(death_curve_breakdown, paste0("plots/death_curve_breakdown_bid_",names(deaths[i]),"_daily",".rds"))
 }
 
 #create the dataset for deaths
@@ -215,7 +215,7 @@ for (i in loop.vector) { # Loop over loop.vector
            hovermode="x unified")
   
   #save the plot
-  saveRDS(epid_curve_breakdown, paste0("plots/death_curve_breakdown_bid_",names(cases[i]),"_perc",".rds"))
+  saveRDS(epid_curve_breakdown, paste0("plots/death_curve_breakdown_bid_",names(deaths[i]),"_perc",".rds"))
 }
 
 #######################################################################################################
@@ -328,7 +328,7 @@ for (i in loop.vector) { # Loop over loop.vector
            hovermode="x unified") 
   
   #save the plot
-  saveRDS(epid_curve_breakdown, paste0("plots/death_curve_breakdown_vax_",names(cases[i]),"_daily",".rds"))
+  saveRDS(epid_curve_breakdown, paste0("plots/death_curve_breakdown_vax_",names(deaths[i]),"_daily",".rds"))
 }
 
 #create the dataset for deaths
@@ -438,5 +438,5 @@ for (i in loop.vector) { # Loop over loop.vector
            hovermode="x unified") 
   
   #save the plot
-  saveRDS(epid_curve_breakdown, paste0("plots/death_curve_breakdown_vax_",names(cases[i]),"_perc",".rds"))
+  saveRDS(epid_curve_breakdown, paste0("plots/death_curve_breakdown_vax_",names(deaths[i]),"_perc",".rds"))
 }
