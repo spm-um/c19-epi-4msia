@@ -64,7 +64,7 @@ lineage_df <- full_join(lineage1, lineage2, by=c("date", "id", "country", "submi
          perc=round((value/(sum(value)))*100,1))
 
 #call transmission in 
-transmission <- read.csv("P:/COVID-19/COVID19-master/ProcessedData/transmission.csv")
+transmission <- read.csv("data/transmission.csv")
 
 #clean variant df to add to transmission
 gene_surv <- variant_df %>% group_by (date) %>%
