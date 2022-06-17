@@ -2,6 +2,7 @@ library(reactable)
 library(htmltools)
 library(tidyverse)
 library(shiny)
+library(viridis)
 
 #pull data
 epid_report <- read.csv("data/epid_report.csv")

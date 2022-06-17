@@ -2,6 +2,7 @@ library(reactable)
 library(htmltools)
 library(tidyverse)
 library(RColorBrewer)
+library(viridis)
 
 #pull data
 testing <- read.csv('data/testing.csv')

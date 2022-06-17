@@ -2,6 +2,7 @@ library(reactable)
 library(htmltools)
 library(tidyverse)
 library(lubridate)
+library(viridis)
 
 #load data
 vaccination <- read.csv('data/vaccination.csv')

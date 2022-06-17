@@ -1,6 +1,7 @@
 library(reactable)
 library(htmltools)
 library(tidyverse)
+library(viridis)
 
 #pull data
 capacity <- read.csv('data/capacity.csv')
