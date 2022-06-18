@@ -39,7 +39,8 @@ jobs:
           install.packages(c("rsconnect", "tidyverse", "plotly",
           "htmltools", "reactable", "scales","httr", "jsonlite", "curl",
           "lubridate", "MMWRweek", "quantmod", "EpiEstim", "readxl", 
-          "readr", "zoo", "shiny", "rmarkdown", "arrow", "viridis"))
+          "readr", "zoo", "shiny", "rmarkdown", "arrow", "viridis",
+          "kableExtra", "svglite", "systemfonts", "webshot"))
         shell: Rscript {0}
         
       - name: Updating data and cleaning 
