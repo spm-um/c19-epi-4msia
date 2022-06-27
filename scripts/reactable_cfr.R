@@ -151,15 +151,4 @@ tbl <- reactable(
   borderless = TRUE,
   class = "standings-table")
 
-
-
-div(class = "standings",
-    div(class = "title",
-        h2(" "),
-        ""
-    ),
-    tbl,
-    " "
-)
-
 saveRDS(tbl, 'plots/cfr_tbl.rds')

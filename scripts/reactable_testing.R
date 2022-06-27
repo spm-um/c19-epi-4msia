@@ -62,11 +62,6 @@ off_rating_color2 <- make_color_pal(c("#44ab43", "#f8fcf8",  "#ff2700"), bias = 
 col <- rev(as.vector(viridis::viridis(100)))
 knockout_pct_color <- make_color_pal(col, bias = 2)
 
-
-
-
-brewer.pal(100, "YlGn")
-
 tbl <- reactable(
   testing,
   pagination = FALSE,
@@ -98,6 +93,7 @@ tbl <- reactable(
       maxWidth = 90,
       cell = function(value) {
         scaled <- 1-(value - min(testing$change_tpr)) / (max(testing$change_tpr) - min(testing$change_tpr))
+        scaled <- ifelse(is.nan(scaled), 0, scaled)
         color <- off_rating_color(scaled)
         value <- format(round(value, 1), nsmall = 1)
         div(class = "date-rating", style = list(background = color), value)
@@ -111,6 +107,7 @@ tbl <- reactable(
       defaultSortOrder = "asc",
       cell = function(value) {
         scaled <- 1 - (value - min(testing$change_tr)) / (max(testing$change_tr) - min(testing$change_tr))
+        scaled <- ifelse(is.nan(scaled), 0, scaled)
         color <- off_rating_color2(scaled)
         value <- format(round(value, 1), nsmall = 1)
         div(class = "date-rating", style = list(background = color), value)
