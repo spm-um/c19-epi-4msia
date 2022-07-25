@@ -7,6 +7,9 @@ library(viridis)
 #pull data
 epid_report <- read.csv("data/epid_report.csv")
 
+#edit values more than 100%
+epid_report <- epid_report %>% mutate(max_vax2=ifelse(max_vax2>1, 1, max_vax2))
+
 #prepare the columns for the epid report
 trans_cols <- c("mean_ir", "perc_change_ir", "mean_mr", "perc_change_mr", "mean_rt_full", "perc_change_rt")
 test_cols <- c("mean_tpr", "trend_tpr", "mean_tr", "perc_change_tr")
