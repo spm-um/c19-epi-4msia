@@ -100,14 +100,11 @@ COVID-19 vaccinations in Malaysia,,,,,,,
 12,Percentage population fully vaccinated,,diff_vax1,Percentage of total population having been fully vaccinated (minus those partially vaccinated),0,"Common Integration Test Framework-Malaysia, GitHub",vaccination
 13,Percentage population registered,,diff_reg,Percentage of total population having been fully vaccinated (minus those partially and fully vaccinated),0,"Common Integration Test Framework-Malaysia, GitHub",vaccination
 14,Percentage population unregistered,,diff_pop,Percentage of unregistered population,0,"Common Integration Test Framework-Malaysia, GitHub",vaccination
-Ratio of COVID-19 variants to cases in Malaysia,,,,,,,
-1,Date of reporting,date,date,Reporting started on 1 April 2021,0,"Director General, Ministry  of Health Malaysia, Daily Press Release",voc_ratio
-2,State,categorical,state,"Categorical: i) Perlis, ii) Kedah, iii) Pulau Pinang, iv) Perak, v) Selangor, vi) Negeri Sembilan, vii) Melaka, viii) Johor, ix) Pahang, x) Terengganu, xi) Kelantan, xii) Sabah, xiii) Sarawak, xiv) Wilayah Perseketuan Kuala Lumpur, xv)  Wilayah Perseketuan Putrajaya, xvi) Wilayah Perseketuan Labuan, and xvii) Malaysia",0,"Director General, Ministry  of Health Malaysia, Daily Press Release",voc_ratio
-3,Variant to case ratio,continuous,ratio,Cumulative number of variants over cumulative number cases up till date,0,"Director General, Ministry  of Health Malaysia, Daily Press Release",voc_ratio
-COVID-19 variants detected in Malaysia,,,,,,,
-1,Date of reporting,date,date,Reporting started on 1 April 2021,0,"Director General, Ministry  of Health Malaysia, Daily Press Release",voc
-2,State,categorical,state,"Categorical: i) Perlis, ii) Kedah, iii) Pulau Pinang, iv) Perak, v) Selangor, vi) Negeri Sembilan, vii) Melaka, viii) Johor, ix) Pahang, x) Terengganu, xi) Kelantan, xii) Sabah, xiii) Sarawak, xiv) Wilayah Perseketuan Kuala Lumpur, xv)  Wilayah Perseketuan Putrajaya, xvi) Wilayah Perseketuan Labuan, and xvii) Malaysia",0,"Director General, Ministry  of Health Malaysia, Daily Press Release",voc
-3,Cumulative number variants detected,continuous,variant_count,Total number variant cases detected,0,"Director General, Ministry  of Health Malaysia, Daily Press Release",voc
-4,Type of variant detected,categorical,variant,"Categorised based on type of variant detected as classified by WHO/Pangolin; i) Alpha B.1.1.7, ii) Beta B.1.351, iii) Delta B.1.617.2, iv) Eta B.1.525, v) Kappa B.1.617.1, and vi) Theta P.3",0,"Director General, Ministry  of Health Malaysia, Daily Press Release",voc
-5,Status of variant detected,categorical,status,"Categorised based on WHO classfication; i) Variant of concern, ii) Variant of interest",0,"Director General, Ministry  of Health Malaysia, Daily Press Release",voc
-6,Cumulative number of cases detected,continuous,cases_sum,Cumulative number of cases ,0,"Director General, Ministry  of Health Malaysia, Daily Press Release",voc
+COVID-19 variants detected in Malaysia & globally,,,,,,,
+1,Country,categorical,Country,All reporting countries ,,,
+2,Date of reporting,date,Week prior to,Reporting begins earliest in January 2020,0,GISAID,voc_ratio
+3,Type of variable,categorical,Type,"Classified either as Clade, Variant, Lineage, and AA-Subst",0,GISAID,voc_ratio
+4,Type of variant,categorical,Value,"Describe variant based on the type category. Example lineage type classifies using PANGOLIN linearge; i) B.1.1.7, ii) B.1.351, iii) B.1.617.2, iv) B.1.525, v) B.1.617.1, and vi) P.3 Variant etc and variant classifies using WHOs variant of concern list; i) Alpha, ii) Beta, iii) Delta, iv) Eta, v) Kappa, and vi) P.3. ",0,GISAID,voc_ratio
+5,Count of variant detected,continuous,Submission Count,"Absolute count by selected sub-stratum of Clade, Variant, Lineage, and AA-Subst by week",,,
+6,Percentage of variant detected,continuous,% per Country and Week,"Percentage selected sub-stratum of Clade, Variant, Lineage, and AA-Subst by week",0,GISAID,voc
+7,Total count of all variant detected in week ,continuous,Total per Country and Week,"Total count by selected stratum of Clade, Variant, Lineage, and AA-Subst by week",0,GISAID,voc

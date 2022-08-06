@@ -707,6 +707,29 @@ renderPlotly({
 )
 ```
 
+## Documentation
+**COVID-19 Epidemiology for Malaysia**
+
+*Department of Social and Preventive Medicine, Faculty of Medicine, University Malaya*
+
+<br />
+
+***Introduction***
+
+The COVID-19 pandemic has propagated the globe over with uneering ease. It has been no different in Malaysia. This dashboard aims to track and leverage on important parameters of disease propagation and control across the country as a means of suplementing the decision-making process within the country. It presents important parameters over the course of the pandemic.
+
+<br />
+
+***Documentation***
+
+Data sources, extraction and methods utilised in the development of the dashboard are available in our [documentation page](https://spm.um.edu.my/covid19-epid-live-documentation/)
+
+<br />
+
+***Feedback***
+
+We believe in continuous improvement and would as such love to hear from you on ways we can improve- be it in the usability of the dashboard or the problems with the content. Additionally if you wish to request for our data or source code please do also drop us a line. You can reach out to us using the attached [Feedback form](https://spm.um.edu.my/covid19-epid-live-feedback/) 
+
 ```{r ref.label="table", eval=FALSE}
 ```
 
